@@ -9,4 +9,7 @@ router.get("/:id", postController.getPost); // Get post by ID
 router.put("/:id", postController.updatePost); // Update post by ID
 router.delete("/:id", postController.deletePost); // Delete post by ID
 
+// Search
+router.get("/search", postController.searchPosts);
+
 module.exports = router;
