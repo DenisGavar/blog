@@ -141,3 +141,39 @@ exports.searchPosts = async (req, res) => {
     });
   }
 };
+
+exports.addCategoriesToPost = async (req, res) => {
+  try {
+    const { id, categoryIds } = req.params;
+
+    const categoriesArray = categoryIds.split(",");
+
+    const categories = await Category.find({ _id: { $in: categoriesArray } });
+    if (categories.length !== categoriesArray.length) {
+      res.status(400).json({
+        status: "fail",
+        message: "One or more categories not found",
+      });
+    }
+
+    const post = await Post.findById(id);
+    if (!post) {
+      return res
+        .status(404)
+        .json({ status: "fail", message: "Post not found" });
+    }
+
+    post.categories = [...new Set([...post.categories, ...categoriesArray])];
+    await post.save();
+
+    res.status(200).json({
+      status: "success",
+      data: null,
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: err.message,
+    });
+  }
+};

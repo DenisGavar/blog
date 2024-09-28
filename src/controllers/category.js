@@ -97,3 +97,26 @@ exports.deleteCategory = async (req, res) => {
     });
   }
 };
+
+exports.getPosts = async (req, res) => {
+  try {
+    const category = await Category.findById(req.params.id).populate("posts");
+    if (!category) {
+      return res
+        .status(404)
+        .json({ status: "fail", message: "Category not found" });
+    }
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        posts: category.posts,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: err.message,
+    });
+  }
+};

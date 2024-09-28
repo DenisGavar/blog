@@ -12,4 +12,7 @@ router.delete("/:id", postController.deletePost); // Delete post by ID
 // Search
 router.get("/search", postController.searchPosts);
 
+// Add categories to a post
+router.post("/:id/categories/:categoryIds", postController.addCategoriesToPost);
+
 module.exports = router;

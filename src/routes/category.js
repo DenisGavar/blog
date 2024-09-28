@@ -9,4 +9,7 @@ router.get("/:id", categoryController.getCategory); // Get category by ID
 router.put("/:id", categoryController.updateCategory); // Update category by ID
 router.delete("/:id", categoryController.deleteCategory); // Delete category by ID
 
+// Print all posts in certain category
+router.get("/:id/posts", categoryController.getPosts);
+
 module.exports = router;
