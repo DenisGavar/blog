@@ -2,6 +2,12 @@ class UserController {
   constructor(logger, userService) {
     this.userService = userService;
     this.logger = logger;
+
+    this.createUser = this.createUser.bind(this);
+    this.getAllUsers = this.getAllUsers.bind(this);
+    this.getUser = this.getUser.bind(this);
+    this.updateUser = this.updateUser.bind(this);
+    this.deleteUser = this.deleteUser.bind(this);
   }
 
   // Create user

@@ -2,6 +2,14 @@ class PostController {
   constructor(logger, postService) {
     this.postService = postService;
     this.logger = logger;
+
+    this.createPost = this.createPost.bind(this);
+    this.getAllPosts = this.getAllPosts.bind(this);
+    this.getPost = this.getPost.bind(this);
+    this.updatePost = this.updatePost.bind(this);
+    this.deletePost = this.deletePost.bind(this);
+    this.searchPosts = this.searchPosts.bind(this);
+    this.addCategoriesToPost = this.addCategoriesToPost.bind(this);
   }
 
   // Create post

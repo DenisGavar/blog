@@ -2,6 +2,13 @@ class CategoryController {
   constructor(logger, categoryService) {
     this.categoryService = categoryService;
     this.logger = logger;
+
+    this.createCategory = this.createCategory.bind(this);
+    this.getAllCategories = this.getAllCategories.bind(this);
+    this.getCategory = this.getCategory.bind(this);
+    this.updateCategory = this.updateCategory.bind(this);
+    this.deleteCategory = this.deleteCategory.bind(this);
+    this.getPosts = this.getPosts.bind(this);
   }
 
   // Create category
@@ -22,7 +29,6 @@ class CategoryController {
 
   // Get all categories
   async getAllCategories(req, res) {
-    //this.logger.info("1")
     try {
       const categories = await this.categoryService.getAllCategorys();
       res.status(200).json({
