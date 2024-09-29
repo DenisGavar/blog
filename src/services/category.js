@@ -1,6 +1,7 @@
 class CategoryService {
-  constructor(categoryRepository) {
+  constructor(logger, categoryRepository) {
     this.categoryRepository = categoryRepository;
+    this.logger = logger;
   }
 
   async create(categoryData) {

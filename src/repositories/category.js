@@ -1,6 +1,10 @@
 const Category = require("../models/category");
 
 class CategoryRepository {
+  constructor(logger) {
+    this.logger = logger;
+  }
+
   async create(categoryData) {
     const category = await Category.create(categoryData);
     return category;

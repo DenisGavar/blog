@@ -1,96 +1,103 @@
-const { userService } = require("../infrastructure/container");
-
-// Create user
-exports.createUser = async (req, res) => {
-  try {
-    const user = await userService.create(req.body);
-    res.status(201).json({
-      status: "success",
-      data: user,
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: "fail",
-      message: err.message,
-    });
+class UserController {
+  constructor(logger, userService) {
+    this.userService = userService;
+    this.logger = logger;
   }
-};
 
-// Get all users
-exports.getAllUsers = async (req, res) => {
-  try {
-    const users = await userService.getAllUsers();
-    res.status(200).json({
-      status: "success",
-      data: users,
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: "fail",
-      message: err.message,
-    });
-  }
-};
-
-// Get user by ID
-exports.getUser = async (req, res) => {
-  try {
-    const user = await userService.getUser(req.params.id);
-    if (!user) {
-      return res
-        .status(404)
-        .json({ status: "fail", message: "User not found" });
+  // Create user
+  async createUser(req, res) {
+    try {
+      const user = await this.userService.create(req.body);
+      res.status(201).json({
+        status: "success",
+        data: user,
+      });
+    } catch (err) {
+      res.status(400).json({
+        status: "fail",
+        message: err.message,
+      });
     }
-    res.status(200).json({
-      status: "success",
-      data: user,
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: "fail",
-      message: err.message,
-    });
   }
-};
 
-// Update user
-exports.updateUser = async (req, res) => {
-  try {
-    const user = await userService.updateUser(req.params.id, req.body);
-    if (!user) {
-      return res
-        .status(404)
-        .json({ status: "fail", message: "User not found" });
+  // Get all users
+  async getAllUsers(req, res) {
+    try {
+      const users = await this.userService.getAllUsers();
+      res.status(200).json({
+        status: "success",
+        data: users,
+      });
+    } catch (err) {
+      res.status(400).json({
+        status: "fail",
+        message: err.message,
+      });
     }
-    res.status(200).json({
-      status: "success",
-      data: user,
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: "fail",
-      message: err.message,
-    });
   }
-};
 
-// Delete user
-exports.deleteUser = async (req, res) => {
-  try {
-    const user = await userService.deleteUser(req.params.id);
-    if (!user) {
-      return res
-        .status(404)
-        .json({ status: "fail", message: "User not found" });
+  // Get user by ID
+  async getUser(req, res) {
+    try {
+      const user = await this.userService.getUser(req.params.id);
+      if (!user) {
+        return res
+          .status(404)
+          .json({ status: "fail", message: "User not found" });
+      }
+      res.status(200).json({
+        status: "success",
+        data: user,
+      });
+    } catch (err) {
+      res.status(400).json({
+        status: "fail",
+        message: err.message,
+      });
     }
-    res.status(204).json({
-      status: "success",
-      data: null,
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: "fail",
-      message: err.message,
-    });
   }
-};
+
+  // Update user
+  async updateUser(req, res) {
+    try {
+      const user = await this.userService.updateUser(req.params.id, req.body);
+      if (!user) {
+        return res
+          .status(404)
+          .json({ status: "fail", message: "User not found" });
+      }
+      res.status(200).json({
+        status: "success",
+        data: user,
+      });
+    } catch (err) {
+      res.status(400).json({
+        status: "fail",
+        message: err.message,
+      });
+    }
+  }
+
+  // Delete user
+  async deleteUser(req, res) {
+    try {
+      const user = await this.userService.deleteUser(req.params.id);
+      if (!user) {
+        return res
+          .status(404)
+          .json({ status: "fail", message: "User not found" });
+      }
+      res.status(204).json({
+        status: "success",
+        data: null,
+      });
+    } catch (err) {
+      res.status(400).json({
+        status: "fail",
+        message: err.message,
+      });
+    }
+  }
+}
+
+module.exports = UserController;

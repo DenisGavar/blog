@@ -1,5 +1,5 @@
 const express = require("express");
-const userController = require("../controllers/user");
+const { userController }= require("../infrastructure/container");
 const router = express.Router();
 
 // CRUD routes for User

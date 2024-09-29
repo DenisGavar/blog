@@ -1,5 +1,5 @@
 const express = require("express");
-const postController = require("../controllers/post");
+const { postController }= require("../infrastructure/container");
 const router = express.Router();
 
 // Search

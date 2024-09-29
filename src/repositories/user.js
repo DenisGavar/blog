@@ -1,6 +1,10 @@
 const User = require("../models/user");
 
 class UserRepository {
+  constructor(logger) {
+    this.logger = logger;
+  }
+
   async create(userData) {
     const user = await User.create(userData);
     return user;

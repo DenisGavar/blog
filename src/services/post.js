@@ -1,8 +1,9 @@
 class PostService {
-  constructor(postRepository, userRepository, categoryRepository) {
+  constructor(logger, postRepository, userRepository, categoryRepository) {
     this.postRepository = postRepository;
     this.userRepository = userRepository;
     this.categoryRepository = categoryRepository;
+    this.logger = logger;
   }
 
   async create(postData) {

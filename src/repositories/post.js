@@ -1,6 +1,10 @@
 const Post = require("../models/post");
 
 class PostRepository {
+  constructor(logger) {
+    this.logger = logger;
+  }
+
   async create(postData) {
     const user = await Post.create(postData);
     return user;
