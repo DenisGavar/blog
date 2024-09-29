@@ -1,10 +1,12 @@
 const dotenv = require("dotenv");
 const express = require("express");
 
+const container = require('./src/infrastructure/container'); // to initialize all services with their dependencies
 const connectDB = require("./src/config/db");
 const userRoutes = require('./src/routes/user');
 const postRoutes = require('./src/routes/post');
 const categoryRoutes = require('./src/routes/category');
+
 
 dotenv.config();
 

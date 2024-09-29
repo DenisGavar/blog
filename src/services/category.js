@@ -1,26 +1,32 @@
-const categoryRepository = require("../repositories/category");
+class CategoryService {
+  constructor(categoryRepository) {
+    this.categoryRepository = categoryRepository;
+  }
 
-exports.create = async (categoryData) => {
-  const category = await categoryRepository.create(categoryData);
-  return category;
-};
+  async create(categoryData) {
+    const category = await this.categoryRepository.create(categoryData);
+    return category;
+  }
 
-exports.getAllCategorys = async () => {
-  const categorys = await categoryRepository.getAllCategorys();
-  return categorys;
-};
+  async getAllCategorys() {
+    const categorys = await this.categoryRepository.getAllCategorys();
+    return categorys;
+  }
 
-exports.getCategory = async (id) => {
-  const category = await categoryRepository.getCategory(id);
-  return category;
-};
+  async getCategory(id) {
+    const category = await this.categoryRepository.getCategory(id);
+    return category;
+  }
 
-exports.updateCategory = async (id, categoryData) => {
-  const category = await categoryRepository.updateCategory(id, categoryData);
-  return category;
-};
+  async updateCategory(id, categoryData) {
+    const category = await this.categoryRepository.updateCategory(id, categoryData);
+    return category;
+  }
 
-exports.deleteCategory = async (id) => {
-  const category = await categoryRepository.deleteCategory(id);
-  return category;
-};
+  async deleteCategory(id) {
+    const category = await this.categoryRepository.deleteCategory(id);
+    return category;
+  }
+}
+
+module.exports = CategoryService;

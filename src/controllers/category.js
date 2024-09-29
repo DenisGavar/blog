@@ -1,4 +1,4 @@
-const categoryService = require("../services/category");
+const { categoryService } = require("../infrastructure/container");
 
 // Create category
 exports.createCategory = async (req, res) => {

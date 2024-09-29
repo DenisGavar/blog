@@ -1,7 +1,4 @@
-//const Post = require("../models/post");
-//const User = require("../models/user");
-//const Category = require("../models/category");
-const postService = require("../services/post");
+const { postService } = require("../infrastructure/container");
 
 // Create post
 exports.createPost = async (req, res) => {

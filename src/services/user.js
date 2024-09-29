@@ -1,26 +1,32 @@
-const userRepository = require("../repositories/user");
+class UserService {
+  constructor(userRepository) {
+    this.userRepository = userRepository;
+  }
 
-exports.create = async (userData) => {
-  const user = await userRepository.create(userData);
-  return user;
-};
+  async create(userData) {
+    const user = await this.userRepository.create(userData);
+    return user;
+  }
 
-exports.getAllUsers = async () => {
-  const users = await userRepository.getAllUsers();
-  return users;
-};
+  async getAllUsers() {
+    const users = await this.userRepository.getAllUsers();
+    return users;
+  }
 
-exports.getUser = async (id) => {
-  const user = await userRepository.getUser(id);
-  return user;
-};
+  async getUser(id) {
+    const user = await this.userRepository.getUser(id);
+    return user;
+  }
 
-exports.updateUser = async (id, userData) => {
-  const user = await userRepository.updateUser(id, userData);
-  return user;
-};
+  async updateUser(id, userData) {
+    const user = await this.userRepository.updateUser(id, userData);
+    return user;
+  }
 
-exports.deleteUser = async (id) => {
-  const user = await userRepository.deleteUser(id);
-  return user;
-};
+  async deleteUser(id) {
+    const user = await this.userRepository.deleteUser(id);
+    return user;
+  }
+}
+
+module.exports = UserService;
