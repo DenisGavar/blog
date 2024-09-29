@@ -1,12 +1,12 @@
-const Category = require("../models/category");
+const categoryService = require("../services/category");
 
 // Create category
 exports.createCategory = async (req, res) => {
   try {
-    const newCategory = await Category.create(req.body);
+    const category = await categoryService.create(req.body);
     res.status(201).json({
       status: "success",
-      data: newCategory,
+      data: category,
     });
   } catch (err) {
     res.status(400).json({
@@ -19,7 +19,7 @@ exports.createCategory = async (req, res) => {
 // Get all categories
 exports.getAllCategories = async (req, res) => {
   try {
-    const categories = await Category.find().populate("posts");
+    const categories = await categoryService.getAllCategorys();
     res.status(200).json({
       status: "success",
       data: categories,
@@ -35,7 +35,7 @@ exports.getAllCategories = async (req, res) => {
 // Get category by ID
 exports.getCategory = async (req, res) => {
   try {
-    const category = await Category.findById(req.params.id).populate("posts");
+    const category = await categoryService.getCategory(req.params.id);
     if (!category) {
       return res
         .status(404)
@@ -56,10 +56,7 @@ exports.getCategory = async (req, res) => {
 // Update category
 exports.updateCategory = async (req, res) => {
   try {
-    const category = await Category.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
+    const category = await categoryService.updateCategory(req.params.id, req.body);
     if (!category) {
       return res
         .status(404)
@@ -80,7 +77,7 @@ exports.updateCategory = async (req, res) => {
 // Delete category
 exports.deleteCategory = async (req, res) => {
   try {
-    const category = await Category.findByIdAndDelete(req.params.id);
+    const category = await categoryService.deleteCategory(req.params.id);
     if (!category) {
       return res
         .status(404)
@@ -98,9 +95,10 @@ exports.deleteCategory = async (req, res) => {
   }
 };
 
+// TODO: it may be better to move the logic to the service level
 exports.getPosts = async (req, res) => {
   try {
-    const category = await Category.findById(req.params.id).populate("posts");
+    const category = await categoryService.getCategory(req.params.id);
     if (!category) {
       return res
         .status(404)

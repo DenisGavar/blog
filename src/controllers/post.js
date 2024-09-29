@@ -1,11 +1,12 @@
-const Post = require("../models/post");
-const User = require("../models/user");
-const Category = require("../models/category");
+//const Post = require("../models/post");
+//const User = require("../models/user");
+//const Category = require("../models/category");
+const postService = require("../services/post");
 
 // Create post
 exports.createPost = async (req, res) => {
   try {
-    const newPost = await Post.create(req.body);
+    const newPost = await postService.create(req.body);
     res.status(201).json({
       status: "success",
       data: newPost,
@@ -21,7 +22,7 @@ exports.createPost = async (req, res) => {
 // Get all posts
 exports.getAllPosts = async (req, res) => {
   try {
-    const posts = await Post.find().populate("author categories");
+    const posts = await postService.getAllPosts();
     res.status(200).json({
       status: "success",
       data: posts,
@@ -37,9 +38,7 @@ exports.getAllPosts = async (req, res) => {
 // Get post by ID
 exports.getPost = async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id).populate(
-      "author categories"
-    );
+    const post = await postService.getPost(req.params.id);
     if (!post) {
       return res
         .status(404)
@@ -60,10 +59,7 @@ exports.getPost = async (req, res) => {
 // Update post
 exports.updatePost = async (req, res) => {
   try {
-    const post = await Post.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
+    const post = await postService.updatePost(req.params.id, req.body);
     if (!post) {
       return res
         .status(404)
@@ -84,7 +80,7 @@ exports.updatePost = async (req, res) => {
 // Delete post
 exports.deletePost = async (req, res) => {
   try {
-    const post = await Post.findByIdAndDelete(req.params.id);
+    const post = await postService.deletePost(req.params.id);
     if (!post) {
       return res
         .status(404)
@@ -105,37 +101,14 @@ exports.deletePost = async (req, res) => {
 // searchPosts
 exports.searchPosts = async (req, res) => {
   try {
-    const { title, author, category } = req.query;
+    const posts = await postService.searchPosts(req.query);
 
-    let filter = {};
-
-    if (title) {
-      filter.title = { $regex: title, $options: "i" }; // Case-insensitive search
-    }
-
-    if (author) {
-      const user = await User.findOne({ username: author });
-      if (user) {
-        filter.author = user._id;
-      }
-    }
-
-    if (category) {
-      const categoryDoc = await Category.findOne({ name: category });
-      if (categoryDoc) {
-        filter.categories = categoryDoc._id;
-      }
-    }
-
-    const posts = await Post.find(filter).populate("author categories");
-
-    res.status(200),
-      json({
-        status: "success",
-        data: { posts },
-      });
+    res.status(200).json({
+      status: "success",
+      data: { posts },
+    });
   } catch (err) {
-    res.status(400).json({
+    res.status(500).json({
       status: "fail",
       message: err.message,
     });
@@ -145,33 +118,21 @@ exports.searchPosts = async (req, res) => {
 exports.addCategoriesToPost = async (req, res) => {
   try {
     const { id, categoryIds } = req.params;
+    const post = await postService.addCategoriesToPost(id, categoryIds);
 
-    const categoriesArray = categoryIds.split(",");
-
-    const categories = await Category.find({ _id: { $in: categoriesArray } });
-    if (categories.length !== categoriesArray.length) {
-      res.status(400).json({
+    if (post) {
+      res.status(200).json({
+        status: "success",
+        data: null,
+      });
+    } else {
+      res.status(404).json({
         status: "fail",
-        message: "One or more categories not found",
+        data: "Post not found",
       });
     }
-
-    const post = await Post.findById(id);
-    if (!post) {
-      return res
-        .status(404)
-        .json({ status: "fail", message: "Post not found" });
-    }
-
-    post.categories = [...new Set([...post.categories, ...categoriesArray])];
-    await post.save();
-
-    res.status(200).json({
-      status: "success",
-      data: null,
-    });
   } catch (err) {
-    res.status(400).json({
+    res.status(500).json({
       status: "fail",
       message: err.message,
     });

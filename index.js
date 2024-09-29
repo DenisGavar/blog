@@ -14,7 +14,7 @@ const app = express();
 app.use(express.json());
 
 app.use("/api/v1/users", userRoutes);
-app.use("/api/va/posts", postRoutes);
+app.use("/api/v1/posts", postRoutes);
 app.use("/api/v1/categories", categoryRoutes);
 
 const port = process.env.PORT || 5000;
