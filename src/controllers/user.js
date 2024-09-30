@@ -8,6 +8,7 @@ class UserController {
     this.getUser = this.getUser.bind(this);
     this.updateUser = this.updateUser.bind(this);
     this.deleteUser = this.deleteUser.bind(this);
+    this.signIn = this.signIn.bind(this);
   }
 
   // Create user
@@ -99,6 +100,23 @@ class UserController {
       });
     } catch (err) {
       res.status(400).json({
+        status: "fail",
+        message: err.message,
+      });
+    }
+  }
+
+  async signIn(req, res) {
+    try {
+      const { username, password } = req.body;
+      const { user, token } = await this.userService.signIn(username, password);
+      res.cookie("jwt", token, { httpOnly: true });
+      res.status(200).json({
+        status: "success",
+        data: user,
+      });
+    } catch (err) {
+      res.status(401).json({
         status: "fail",
         message: err.message,
       });

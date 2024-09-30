@@ -37,6 +37,15 @@ class UserRepository {
     const user = await User.findOne({ username: username });
     return user;
   }
+
+  async getPassword(id) {
+    const user = await User.findById(id).select("+password");
+    if (!user) {
+      throw new Error("User not found");
+    }
+    const password = user.password;
+    return password;
+  }
 }
 
 module.exports = UserRepository;
