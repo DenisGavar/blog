@@ -8,6 +8,7 @@ const postRoutes = require("./src/routes/post");
 const categoryRoutes = require("./src/routes/category");
 const signRoutes = require("./src/routes/sign")
 const authenticate = require("./src/middlewares/auth")
+const log = require("./src/middlewares/log")
 
 const logger = require("./src/utils/logger");
 
@@ -18,6 +19,9 @@ connectDB();
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
+
+// Middleware to log HTTP requests
+app.use(log);
 
 app.use("/api/v1", signRoutes)
 
