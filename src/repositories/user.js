@@ -21,20 +21,17 @@ class UserRepository {
   }
 
   async updateUser(id, userData) {
-    const user = await User.findByIdAndUpdate(id, userData, {
-      new: true,
-      runValidators: true,
-    });
+    const user = await User.findById(id);
+    if (!user) {
+      throw new Error("User not found");
+    }
+    Object.assign(user, userData);
+    await user.save();
     return user;
   }
 
   async deleteUser(id) {
     const user = await User.findByIdAndDelete(id);
-    return user;
-  }
-
-  async getUserByUsername(username) {
-    const user = await User.findOne({ username: username });
     return user;
   }
 
@@ -45,6 +42,11 @@ class UserRepository {
     }
     const password = user.password;
     return password;
+  }
+
+  async findOne(data) {
+    const user = await User.findOne(data);
+    return user;
   }
 }
 

@@ -9,6 +9,8 @@ class UserController {
     this.updateUser = this.updateUser.bind(this);
     this.deleteUser = this.deleteUser.bind(this);
     this.signIn = this.signIn.bind(this);
+    this.requestPasswordReset = this.requestPasswordReset.bind(this);
+    this.passwordReset = this.passwordReset.bind(this);
   }
 
   // Create user
@@ -119,6 +121,61 @@ class UserController {
       res.status(401).json({
         status: "fail",
         message: err.message,
+      });
+    }
+  }
+
+  async requestPasswordReset(req, res) {
+    try {
+      const { email } = req.body;
+      const resetToken = await this.userService.createPasswordResetToken(email);
+
+      if (!resetToken) {
+        return res.status(404).json({
+          status: "fail",
+          message: "User not found",
+        });
+      }
+
+      // Send email with the resetToken as part of a link
+      await this.userService.sendResetEmail(email, resetToken);
+
+      res.status(200).json({
+        status: "success",
+        message: "Password reset link has been sent to your email.",
+      });
+    } catch (err) {
+      this.logger.error(err);
+      res.status(500).json({
+        status: "fail",
+        message: "An error occurred while processing your request.",
+      });
+    }
+  }
+
+  async passwordReset(req, res) {
+    try {
+      const { newPassword } = req.body;
+      const token = req.params.token;
+
+      const user = await this.userService.passwordReset(token, newPassword);
+
+      if (!user) {
+        return res.status(400).json({
+          status: "fail",
+          message: "Invalid or expired token",
+        });
+      }
+
+      res.status(200).json({
+        status: "success",
+        message: "Password has been updated successfully.",
+      });
+    } catch (err) {
+      this.logger.error(err);
+      res.status(500).json({
+        status: "fail",
+        message: "An error occurred while processing your request.",
       });
     }
   }
