@@ -64,19 +64,19 @@ class PostService {
     return user;
   }
 
-  async validateCategory(category) {
+  async validateCategory(name) {
     const op = "services.post.validateCategory";
-    const message = { op: op, category: category };
+    const message = { op: op, name: name };
     this.logger.info("", message);
 
-    const categoryDoc = await this.categoryRepository.getCategoryByName(
-      category
-    );
+    const category = await this.categoryRepository.findOne({
+      name: name,
+    });
 
-    if (!categoryDoc) {
+    if (!category) {
       throw new Error("Category not found");
     }
-    return categoryDoc;
+    return category;
   }
 
   async searchPosts(query) {
