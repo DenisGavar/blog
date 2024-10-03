@@ -41,8 +41,6 @@ app.listen(port, () => {
   logger.info(`Listening on ${port}`);
 });
 
-// TODO: add logging
 // TODO: add tests
 // TODO: add refresh token
-// TODO: add documentation
 // TODO: check folder structure
