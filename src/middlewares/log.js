@@ -1,7 +1,8 @@
 const logger = require("../utils/logger");
 
 const log = (req, res, next) => {
-  logger.info(`${req.method} ${req.url}`);
+  const message = { method: req.method, url: req.url };
+  logger.info("", message);
   next();
 };
 

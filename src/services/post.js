@@ -7,31 +7,55 @@ class PostService {
   }
 
   async create(postData) {
+    const op = "services.post.create";
+    const message = { op: op };
+    this.logger.info("", message);
+
     const post = await this.postRepository.create(postData);
     return post;
   }
 
   async getAllPosts() {
+    const op = "services.post.getAllPosts";
+    const message = { op: op };
+    this.logger.info("", message);
+
     const posts = await this.postRepository.getAllPosts();
     return posts;
   }
 
   async getPost(id) {
+    const op = "services.post.getPost";
+    const message = { op: op, id: id };
+    this.logger.info("", message);
+
     const post = await this.postRepository.getPost(id);
     return post;
   }
 
   async updatePost(id, postData) {
+    const op = "services.post.updatePost";
+    const message = { op: op, id: id };
+    this.logger.info("", message);
+
     const post = await this.postRepository.updatePost(id, postData);
     return post;
   }
 
   async deletePost(id) {
+    const op = "services.post.deletePost";
+    const message = { op: op, id: id };
+    this.logger.info("", message);
+
     const post = await this.postRepository.deletePost(id);
     return post;
   }
 
   async validateUser(username) {
+    const op = "services.post.validateUser";
+    const message = { op: op, username: username };
+    this.logger.info("", message);
+
     const user = await this.userRepository.getUserByUsername(username);
 
     if (!user) {
@@ -41,7 +65,13 @@ class PostService {
   }
 
   async validateCategory(category) {
-    const categoryDoc = await this.categoryRepository.getCategoryByName(category);
+    const op = "services.post.validateCategory";
+    const message = { op: op, category: category };
+    this.logger.info("", message);
+
+    const categoryDoc = await this.categoryRepository.getCategoryByName(
+      category
+    );
 
     if (!categoryDoc) {
       throw new Error("Category not found");
@@ -50,6 +80,10 @@ class PostService {
   }
 
   async searchPosts(query) {
+    const op = "services.post.searchPosts";
+    const message = { op: op, query: query };
+    this.logger.info("", message);
+
     const { title, author, category } = query;
 
     let filter = {};
@@ -73,6 +107,10 @@ class PostService {
   }
 
   async validateCategories(ids) {
+    const op = "services.post.validateCategories";
+    const message = { op: op, ids: ids };
+    this.logger.info("", message);
+
     const categories = await this.categoryRepository.findCategoriesByIds(ids);
     if (categories.length !== ids.length) {
       throw new Error("One or more categories not found");
@@ -80,10 +118,17 @@ class PostService {
   }
 
   async addCategoriesToPost(id, categoryIds) {
+    const op = "services.post.addCategoriesToPost";
+    const message = { op: op, id: id, categoryIds: categoryIds };
+    this.logger.info("", message);
+
     const categoriesArray = categoryIds.split(",");
     await this.validateCategories(categoriesArray);
 
-    const post = await this.postRepository.addCategoriesToPost(id, categoriesArray);
+    const post = await this.postRepository.addCategoriesToPost(
+      id,
+      categoriesArray
+    );
     return post;
   }
 }

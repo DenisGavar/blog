@@ -24,11 +24,14 @@ app.use(cookieParser());
 // Middleware to log HTTP requests
 app.use(log);
 
+// Routes to sign up/in or to change a password
 app.use("/api/v1", signRoutes)
 app.use("/api/v1/password", passwordResetRoutes)
 
+// Middleware to authenticate
 app.use(authenticate);
 
+// Routes to access the information
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/posts", postRoutes);
 app.use("/api/v1/categories", categoryRoutes);

@@ -11,31 +11,55 @@ class UserService {
   }
 
   async create(userData) {
+    const op = "services.user.create";
+    const message = { op: op };
+    this.logger.info("", message);
+
     const user = await this.userRepository.create(userData);
     return user;
   }
 
   async getAllUsers() {
+    const op = "services.user.getAllUsers";
+    const message = { op: op };
+    this.logger.info("", message);
+
     const users = await this.userRepository.getAllUsers();
     return users;
   }
 
   async getUser(id) {
+    const op = "services.user.getUser";
+    const message = { op: op, id: id };
+    this.logger.info("", message);
+
     const user = await this.userRepository.getUser(id);
     return user;
   }
 
   async updateUser(id, userData) {
+    const op = "services.user.updateUser";
+    const message = { op: op, id: id };
+    this.logger.info("", message);
+
     const user = await this.userRepository.updateUser(id, userData);
     return user;
   }
 
   async deleteUser(id) {
+    const op = "services.user.deleteUser";
+    const message = { op: op, id: id };
+    this.logger.info("", message);
+
     const user = await this.userRepository.deleteUser(id);
     return user;
   }
 
   async signIn(username, password) {
+    const op = "services.user.signIn";
+    const message = { op: op, username: username };
+    this.logger.info("", message);
+
     const user = await this.userRepository.findOne({ username: username });
     if (
       !user ||
@@ -55,9 +79,13 @@ class UserService {
   }
 
   async createPasswordResetToken(email) {
+    const op = "services.user.createPasswordResetToken";
+    const message = { op: op, email: email };
+    this.logger.info("", message);
+
     const user = await this.userRepository.findOne({ email: email });
     if (!user) {
-      return null;
+      throw new Error("User not found");
     }
 
     const resetToken = crypto.randomBytes(32).toString("hex");
@@ -77,11 +105,19 @@ class UserService {
   }
 
   async sendResetEmail(email, resetToken) {
+    const op = "services.user.sendResetEmail";
+    const message = { op: op, email: email };
+    this.logger.info("", message);
+
     const resetURL = `http://localhost:5000/api/v1/password/reset/${resetToken}`;
     sendEmail(email, "Password reset link", resetURL);
   }
 
   async passwordReset(token, newPassword) {
+    const op = "services.user.passwordReset";
+    const message = { op: op };
+    this.logger.info("", message);
+
     const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
     const user = await this.userRepository.findOne({
       passwordResetToken: hashedToken,
@@ -89,7 +125,7 @@ class UserService {
     });
 
     if (!user) {
-      return null;
+      throw new Error("User not found");
     }
 
     const updatedUser = await this.userRepository.updateUser(user._id, {
