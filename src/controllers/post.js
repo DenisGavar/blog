@@ -15,12 +15,17 @@ class PostController {
   // Create post
   async createPost(req, res) {
     try {
+      const op = "controllers.post.createPost";
+      const message = { op: op, title: req.body.title };
+      this.logger.info("", message);
+
       const newPost = await this.postService.create(req.body);
       res.status(201).json({
         status: "success",
         data: newPost,
       });
     } catch (err) {
+      this.logger.error(err);
       res.status(400).json({
         status: "fail",
         message: err.message,
@@ -31,12 +36,17 @@ class PostController {
   // Get all posts
   async getAllPosts(req, res) {
     try {
+      const op = "controllers.post.getAllPosts";
+      const message = { op: op };
+      this.logger.info("", message);
+
       const posts = await this.postService.getAllPosts();
       res.status(200).json({
         status: "success",
         data: posts,
       });
     } catch (err) {
+      this.logger.error(err);
       res.status(400).json({
         status: "fail",
         message: err.message,
@@ -47,17 +57,24 @@ class PostController {
   // Get post by ID
   async getPost(req, res) {
     try {
+      const op = "controllers.post.getPost";
+      const message = { op: op, id: req.params.id };
+      this.logger.info("", message);
+
       const post = await this.postService.getPost(req.params.id);
       if (!post) {
-        return res
-          .status(404)
-          .json({ status: "fail", message: "Post not found" });
+        this.logger.error(err);
+        return res.status(404).json({
+          status: "fail",
+          message: "Post not found",
+        });
       }
       res.status(200).json({
         status: "success",
         data: post,
       });
     } catch (err) {
+      this.logger.error(err);
       res.status(400).json({
         status: "fail",
         message: err.message,
@@ -68,17 +85,24 @@ class PostController {
   // Update post
   async updatePost(req, res) {
     try {
+      const op = "controllers.post.updatePost";
+      const message = { op: op, id: req.params.id };
+      this.logger.info("", message);
+
       const post = await this.postService.updatePost(req.params.id, req.body);
       if (!post) {
-        return res
-          .status(404)
-          .json({ status: "fail", message: "Post not found" });
+        this.logger.error(err);
+        return res.status(404).json({
+          status: "fail",
+          message: "Post not found",
+        });
       }
       res.status(200).json({
         status: "success",
         data: post,
       });
     } catch (err) {
+      this.logger.error(err);
       res.status(400).json({
         status: "fail",
         message: err.message,
@@ -89,17 +113,24 @@ class PostController {
   // Delete post
   async deletePost(req, res) {
     try {
+      const op = "controllers.post.deletePost";
+      const message = { op: op, id: req.params.id };
+      this.logger.info("", message);
+
       const post = await this.postService.deletePost(req.params.id);
       if (!post) {
-        return res
-          .status(404)
-          .json({ status: "fail", message: "Post not found" });
+        this.logger.error(err);
+        return res.status(404).json({
+          status: "fail",
+          message: "Post not found",
+        });
       }
       res.status(204).json({
         status: "success",
         data: null,
       });
     } catch (err) {
+      this.logger.error(err);
       res.status(400).json({
         status: "fail",
         message: err.message,
@@ -110,6 +141,10 @@ class PostController {
   // searchPosts
   async searchPosts(req, res) {
     try {
+      const op = "controllers.post.searchPosts";
+      const message = { op: op, query: req.query };
+      this.logger.info("", message);
+
       const posts = await this.postService.searchPosts(req.query);
 
       res.status(200).json({
@@ -117,6 +152,7 @@ class PostController {
         data: { posts },
       });
     } catch (err) {
+      this.logger.error(err);
       res.status(500).json({
         status: "fail",
         message: err.message,
@@ -127,6 +163,11 @@ class PostController {
   async addCategoriesToPost(req, res) {
     try {
       const { id, categoryIds } = req.params;
+
+      const op = "controllers.post.addCategoriesToPost";
+      const message = { op: op, is: id, categories: categoryIds };
+      this.logger.info("", message);
+
       const post = await this.postService.addCategoriesToPost(id, categoryIds);
 
       if (post) {
@@ -135,12 +176,14 @@ class PostController {
           data: null,
         });
       } else {
+        this.logger.error(err);
         res.status(404).json({
           status: "fail",
           data: "Post not found",
         });
       }
     } catch (err) {
+      this.logger.error(err);
       res.status(500).json({
         status: "fail",
         message: err.message,
