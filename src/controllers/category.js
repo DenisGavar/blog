@@ -141,6 +141,7 @@ class CategoryController {
   }
 
   // TODO: it may be better to move the logic to the service level
+  // Get all posts in a certain category
   async getPosts(req, res) {
     try {
       const op = "controllers.category.getPosts";

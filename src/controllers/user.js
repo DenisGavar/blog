@@ -137,6 +137,7 @@ class UserController {
     }
   }
 
+  // User authentication
   async signIn(req, res) {
     try {
       const { username, password } = req.body;
@@ -160,6 +161,7 @@ class UserController {
     }
   }
 
+  // Processing a password change request
   async requestPasswordReset(req, res) {
     try {
       const { email } = req.body;
@@ -194,6 +196,7 @@ class UserController {
     }
   }
 
+  // Set a new password
   async passwordReset(req, res) {
     try {
       const { newPassword } = req.body;

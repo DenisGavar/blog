@@ -138,7 +138,7 @@ class PostController {
     }
   }
 
-  // searchPosts
+  // Get posts by title, author, category
   async searchPosts(req, res) {
     try {
       const op = "controllers.post.searchPosts";
@@ -160,6 +160,7 @@ class PostController {
     }
   }
 
+  // Link a post to categories 
   async addCategoriesToPost(req, res) {
     try {
       const { id, categoryIds } = req.params;

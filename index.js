@@ -1,16 +1,16 @@
 const dotenv = require("dotenv");
 const express = require("express");
-const cookieParser = require('cookie-parser');
-const cors = require('cors')
+const cookieParser = require("cookie-parser");
+const cors = require("cors");
 
 const connectDB = require("./src/config/db");
 const userRoutes = require("./src/routes/user");
 const postRoutes = require("./src/routes/post");
 const categoryRoutes = require("./src/routes/category");
-const signRoutes = require("./src/routes/sign")
-const passwordResetRoutes = require("./src/routes/password-reset")
-const authenticate = require("./src/middlewares/auth")
-const log = require("./src/middlewares/log")
+const signRoutes = require("./src/routes/sign");
+const passwordResetRoutes = require("./src/routes/password-reset");
+const authenticate = require("./src/middlewares/auth");
+const log = require("./src/middlewares/log");
 
 const logger = require("./src/utils/logger");
 
@@ -21,14 +21,14 @@ connectDB();
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors())
+app.use(cors());
 
 // Middleware to log HTTP requests
 app.use(log);
 
 // Routes to sign up/in or to change a password
-app.use("/api/v1", signRoutes)
-app.use("/api/v1/password", passwordResetRoutes)
+app.use("/api/v1", signRoutes);
+app.use("/api/v1/password", passwordResetRoutes);
 
 // Middleware to authenticate
 app.use(authenticate);
@@ -45,4 +45,3 @@ app.listen(port, () => {
 
 // TODO: add tests
 // TODO: add refresh token
-// TODO: check folder structure

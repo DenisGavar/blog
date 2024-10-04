@@ -51,6 +51,7 @@ class PostService {
     return post;
   }
 
+  // Checking that user exists
   async validateUser(username) {
     const op = "services.post.validateUser";
     const message = { op: op, username: username };
@@ -64,6 +65,7 @@ class PostService {
     return user;
   }
 
+  // Checking that the category exists
   async validateCategory(name) {
     const op = "services.post.validateCategory";
     const message = { op: op, name: name };
@@ -106,6 +108,7 @@ class PostService {
     return posts;
   }
 
+  // Checking that all categories exist
   async validateCategories(ids) {
     const op = "services.post.validateCategories";
     const message = { op: op, ids: ids };
